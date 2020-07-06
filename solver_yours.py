@@ -8,8 +8,8 @@ from common import print_solution, read_input
 #simulated annealing
 
 #starting temperature finishing temperature
-T0 = 70
-Tend = 1e-8
+T0 = 80
+Tend = 1e-5
 #attenuation coefficient
 a = 0.985
 
@@ -81,6 +81,7 @@ def getnewroute(route, time,n_len):
     
     return current
 
+import solver_greedy
 def solve(cities):
     city_x,city_y = load_position(cities)
     n_len = len(city_x)
@@ -90,7 +91,7 @@ def solve(cities):
     #distance maxtrix
     getdistance(city_x,city_y,n_len,distence)
     #initial
-    route = random.sample(range(0, n_len), n_len) 
+    route = solver_greedy.solve(cities) 
     total_dis = cacl_best(route,n_len,distence)
     newroute = []
     new_total_dis = 0.0
@@ -102,7 +103,7 @@ def solve(cities):
         if t <= Tend:
             break
         #set the initial temp
-        for rt2 in range(int(len(cities)*3)):
+        for rt2 in range(600):
             newroute = getnewroute(route, rt2,n_len)
             new_total_dis = cacl_best(newroute,n_len,distence)
             delt = new_total_dis - total_dis
